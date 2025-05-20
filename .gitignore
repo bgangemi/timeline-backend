@@ -1,0 +1,61 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+
+# Media and static files
+/media/
+/staticfiles/
+
+# If you're using WhiteNoise or collectstatic
+staticfiles/
+static_root/
+
+# Local settings
+.env
+.env.*
+
+# VS Code and other IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Pytest
+.cache/
+
+# Migrations (optional — keep if you want to track them)
+# **Be careful before ignoring these in team projects**
+# **Uncomment the line below if you want to ignore all migration files**
+# */migrations/*.py
+# */migrations/*.pyc
