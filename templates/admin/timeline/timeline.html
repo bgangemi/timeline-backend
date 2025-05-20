@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %} {% block content %}
+Abuse Timeline
+{% for group in groups %}
+{{ group.name }}
+{% for event in group.events.all %}
+ {{ event.date.year }}: {{ event.name }} ({{ event.abuse_types_display }})
+{{ event.description }}
+
+{% if event.files.all %}
+Files:
+
+{% for file in event.files.all %}
+Document {{ forloop.counter }}
+{% endfor %}
+{% endif %} {% if event.comments.all %}
+Comments:
+
+{% for comment in event.comments.all %}
+{{ comment.date }}: {{ comment.comment }} (by {{ comment.user }})
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %} {% endblock %}
