@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'your-secret-key-replace-this'  # Generate a secure key
 DEBUG = True  # Set to False in production
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Update for hosting domain
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'timeline-backend.ailleurs.digital']  # Update for hosting domain
 
 INSTALLED_APPS = [
     'django.contrib.admin',
