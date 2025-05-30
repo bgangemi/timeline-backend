@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     # 'two_factor',
     'private_storage',
     'auditlog',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,28 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+LANGUAGE_CODE = 'fr-fr'
+TIME_ZONE = 'Europe/Paris'
+USE_I18N = True
+USE_L10N = True  # Localize formats (dates, numbers, etc.)
+USE_TZ = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            ['Format'],     
+            ['Bold', 'Italic', 'Underline'],
+            ['TextColor', 'BGColor'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['Table', 'TableProperties', 'MergeCells'],
+            ['RemoveFormat', 'Source'],
+        ],
+        'width': '1000px',   # You can use px or % here
+        'height': '200px',
+    },
+}
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
