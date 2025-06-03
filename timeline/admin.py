@@ -38,9 +38,26 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
-    list_display = ["name", "owner", "created_at", "group_count", "event_count"]
+    list_display = ["indented_name", "parent", "owner", "created_at", "group_count", "event_count"]
     inlines = [GroupInline, UploadedDocumentInline]
     autocomplete_fields = ['tags']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Order by parent (nulls first), then by name
+        return qs.order_by('parent__id', 'name')
+
+    def indented_name(self, obj):
+        # Indent by level of nesting - count ancestors recursively
+        level = 0
+        parent = obj.parent
+        while parent:
+            level += 1
+            parent = parent.parent
+        indent = "— " * level
+        return f"{indent}{obj.name}"
+    indented_name.short_description = "Name"
+    indented_name.admin_order_field = 'name'
 
     def group_count(self, obj):
         return obj.group_set.count()
@@ -53,7 +70,7 @@ class FileAdmin(admin.ModelAdmin):
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['__str__', "date_start", "date_end", "name", "owner", "rendered_description", "file", "created_at"]
-    inlines = [EventInline, UploadedDocumentInline]
+    inlines = [UploadedDocumentInline]
     autocomplete_fields = ['tags']
 
     def rendered_description(self, obj):
@@ -62,8 +79,8 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ["date", "name", "owner", "group", "rendered_description"]
-    list_filter = ["date", "owner", "group", "file"]
+    list_display = ["date", "name", "owner", "rendered_description"]
+    list_filter = ["date", "owner", "file"]
     ordering = ["date"]
     inlines = [UploadedDocumentInline]
     autocomplete_fields = ['tags']

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gangexit</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body class="font-sans flex flex-col min-h-screen">
+
+  <header class="w-full">
+    <nav class="border-b border-slate-200 py-4 text-center">
+        <span class="text-3xl font-semibold"><a href="/" class="text-slate-800 hover:text-slate-500">gangexit</a></span>
+    </nav>
+  </header>
+
+    <main x-data="groupApp()" class="relative flex-1 mx-auto border-r border-l border-stone-200 max-w-6xl w-full">
+        
+        <template x-show="!selectedGroup" class="w-full bg-slate-200 pt-24 pb-24">
+            <span>hello</span>
+            {% include '_group_list.html' %}
+        </template>
+
+        <template 
+            x-show="selectedGroup"
+            x-transition.opacity.duration.800ms
+            x-cloak
+            class="absolute flex-1 inset-0 flex flex-col gap-4 w-full bg-white pt-24 pb-24"
+        >
+        <span>goodbye</span>
+        {% include '_group_details.html' %}
+    </template>
+    </main>
+
+
+  <footer class="w-full text-center text-sm py-4 border-t border-slate-200 text-slate-600 z-50">
+    <span>Courriels : </span>
+    <a class="font-semibold hover:underline" href="mailto:bgangemi@protonmail.com">Bruno</a><span>&nbsp;&nbsp;-&nbsp;
+    <a class="font-semibold hover:underline" href="mailto:gangemiornella@hotmail.com">Ornella</a></span><br />
+    <span class="text-xs text-slate-600"><small>Strictement confidentiel. Quasiment public.</span>
+  </footer>
+
+      <script>
+    function groupApp() {
+        return {
+            selectedGroup: null,
+
+            selectGroup(groupId) {
+                this.selectedGroup = groupId;
+                // Tu pourras ici faire un fetch plus tard
+                console.log('Groupe sélectionné:', groupId);
+            },
+
+            goBack() {
+                this.selectedGroup = null;
+            }
+        }
+        
+        
+    }
+    </script>
+
+</body>
+
+</html>

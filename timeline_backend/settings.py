@@ -18,7 +18,10 @@ INSTALLED_APPS = [
     # 'two_factor',
     'private_storage',
     'auditlog',
-    'ckeditor'
+    'ckeditor',
+    "tailwind",
+    "theme"
+    #"django_browser_reload"
 ]
 
 MIDDLEWARE = [
@@ -100,4 +103,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 PRIVATE_STORAGE_ROOT = BASE_DIR / 'private-media'
 
+TAILWIND_APP_NAME = 'theme'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"

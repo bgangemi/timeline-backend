@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gangexit</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body class="m-0 p-0 font-sans min-h-screen">
+  <div class="flex flex-row min-h-screen">
+    <aside class="w-24 border-r border-slate-300">
+      <nav class="flex flex-col">
+        <div>Home</div>
+        <div>People</div>
+        <div>Organisations</div>
+        <div>Assets</div>
+        <div>Events</div>
+        <div><b>Dossiers</b></div>
+        <div>Tags</div>
+        <div>Evidence</div>
+        <div>Logout</div>
+      </nav>
+    </aside>
+    <main class="flex-1 flex">
+      <div class="flex-1 bg-slate-100">main timeline of the dossier</div>
+      <div class="flex-1 bg-slate-200">empty space for overlay with event specifics</div>
+    </main>
+  </div>
+</body>
+
+</html>

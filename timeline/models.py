@@ -21,6 +21,7 @@ class Tag(models.Model):
 
 class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="files")
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, unique=True)
     summary = RichTextField(blank=True, null=True)
     information = RichTextField(blank=True, null=True, verbose_name="Practical informations") 
@@ -72,8 +73,7 @@ class AbuseType(models.Model):
 
 class Event(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="events")
-    file = models.ForeignKey(File, on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name="events")
+    file = models.ForeignKey(File, on_delete=models.SET_NULL, null=True, blank=True, related_name="events")
     name = models.CharField(max_length=200)
     date = models.DateField()
     date_approx_level = models.CharField(
