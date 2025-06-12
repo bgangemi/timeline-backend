@@ -1,0 +1,10 @@
+{% extends "files.html" %}
+
+{% block content %}
+    <div id="file-details" class="p-6">
+        <h2 class="text-3xl mb-4">{{ selected_file.name }}</h2>
+        <div class="prose max-w-none">
+            {{ selected_file.details|safe }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,125 @@
+<div id="overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity duration-300 opacity-0"></div>
+
+<aside id="sidebar" class="
+  fixed top-0 right-0 h-screen w-24 bg-stone-950 text-stone-50 z-50
+  transform translate-x-full transition-transform duration-300
+  md:static md:translate-x-0 md:block md:left-0 md:right-auto
+  border-l md:border-r border-stone-900
+">
+
+  <nav class="flex flex-col justify-center h-full
+  [&>a.nav-link]:text-tiny
+  [&>a.nav-link]:flex
+  [&>a.nav-link]:flex-col
+  [&>a.nav-link]:items-center
+  [&>a.nav-link:first-child]:mt-8
+  [&>a.nav-link]:mb-4">
+
+  <a href="{% url 'home' %}"
+     class="nav-link flex flex-col gap-[2px] items-center
+            text-stone-400
+            menu-item
+            {% if request.path == '/' %}text-stone-200{% endif %}
+            hover:no-underline transition-colors duration-100">
+
+    <span class="p-2 rounded-full duration-100 bg-stone-900
+                 {% if request.path == '/' %}bg-stone-100{% endif %}
+                 {% if request.path != '/' %}hover:bg-stone-800{% endif %}">
+      <span class="iconify w-6 h-6 {% if request.path == '/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:home-angle-bold-duotone" data-inline="false"></span>
+    </span>
+    <span class="{% if request.path == '/' %}text-stone-50{% else %}text-stone-400{% endif %}">Home</span>
+  </a>
+
+  <a href="{% url 'files' %}"
+     class="nav-link flex flex-col gap-[2px] items-center
+            text-stone-400
+            menu-item
+            {% if request.path == '/files/' %}text-stone-200{% endif %}
+            hover:no-underline transition-colors duration-100">
+
+      <span class="p-2 rounded-full duration-100 
+                    {% if request.path == '/files/' %}
+                      bg-amber-200
+                    {% else %}
+                      bg-stone-900 hover:bg-stone-800
+                    {% endif %}">
+      <span class="iconify w-6 h-6 {% if request.path == '/files/' %}text-stone-950{% else %}text-stone-400{% endif %}"  data-icon="solar:folder-with-files-bold-duotone" data-inline="false"></span>
+    </span>
+    <span class="{% if request.path == '/files/' %}text-yellow-100{% else %}text-stone-400{% endif %}">Files</span>
+  </a>
+
+  <a href="{% url 'actors' %}"
+     class="nav-link flex flex-col gap-[2px] items-center
+            text-stone-400
+            menu-item
+            {% if request.path == '/actors/' %}text-stone-200{% endif %}
+            hover:no-underline transition-colors duration-100">
+
+    <span class="p-2 rounded-full duration-100 bg-stone-900
+                 {% if request.path == '/actors/' %}bg-stone-100{% endif %}
+                 {% if request.path != '/actors/' %}hover:bg-stone-800{% endif %}">
+      <span class="iconify w-6 h-6 {% if request.path == '/actors/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:masks-bold-duotone" data-inline="false"></span>
+    </span>
+    <span class="{% if request.path == '/actors/' %}text-stone-50{% else %}text-stone-400{% endif %}">Actors</span>
+  </a>
+
+  <a href="{% url 'acts' %}"
+     class="nav-link flex flex-col gap-[2px] items-center
+            text-stone-400
+            menu-item
+            {% if request.path == '/acts/' %}text-stone-200{% endif %}
+            hover:no-underline transition-colors duration-100">
+
+    <span class="p-2 rounded-full duration-100 bg-stone-900
+                 {% if request.path == '/acts/' %}bg-stone-700 text-stone-50{% endif %}
+                 hover:bg-stone-800">
+      <span class="iconify w-6 h-6 {% if request.path == '/acts/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:calendar-bold-duotone" data-inline="false"></span>
+    </span>
+    <span class="{% if request.path == '/acts/' %}text-stone-50{% else %}text-stone-400{% endif %}">Events</span>
+  </a>
+
+  <a href="{% url 'scripts' %}"
+     class="nav-link flex flex-col gap-[2px] items-center
+            text-stone-400
+            menu-item
+            {% if request.path == '/scripts/' %}text-stone-200{% endif %}
+            hover:no-underline transition-colors duration-100">
+
+    <span class="p-2 rounded-full duration-100 bg-stone-900
+                 {% if request.path == '/scripts/' %}bg-stone-500{% endif %}
+                 hover:bg-stone-800">
+      <span class="iconify w-6 h-6 {% if request.path == '/scripts/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:chat-dots-bold-duotone" data-inline="false"></span>
+    </span>
+    <span class="{% if request.path == '/scripts/' %}text-stone-50{% else %}text-stone-400{% endif %}">Stories</span>
+  </a>
+
+  <a href="{% url 'documents' %}"
+     class="nav-link flex flex-col gap-[4px] items-center
+            text-stone-400
+            menu-item
+            {% if request.path == '/traces/' %}text-stone-200{% endif %}
+            hover:no-underline transition-colors duration-100">
+
+    <span class="p-2 rounded-full duration-100 bg-stone-900
+                 {% if request.path == '/traces/' %}bg-stone-700{% endif %}
+                 hover:bg-stone-800">
+      <span class="iconify w-6 h-6" data-icon="solar:documents-bold-duotone" data-inline="false"></span>
+    </span>
+    <span class="{% if request.path == '/documents/' %}text-stone-50{% else %}text-stone-400{% endif %}">Docs</span>
+  </a>
+
+  <a href="{% url 'logout' %}"
+     class="nav-link flex flex-col gap-[4px] items-center mt-auto
+            text-stone-400
+            menu-item
+            hover:no-underline transition-colors duration-100">
+
+    <span class="p-2 rounded-full duration-100 bg-stone-900 hover:bg-stone-800">
+      <span class="iconify w-5 h-5" data-icon="solar:exit-bold-duotone" data-inline="false"></span>
+    </span>
+    <span>Exit</span>
+  </a>    
+
+</nav>
+
+  </aside>

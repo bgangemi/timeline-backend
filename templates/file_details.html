@@ -1,0 +1,57 @@
+{% extends "files.html" %}
+
+{% block content %}
+        <h1 class="px-2">{{ file.name }}</h1>
+        <div class="font-sans text-stone-600 px-2 flex flex-row items-center gap-2 text-sm">
+          <span class="text-stone-700 iconify block w-5 h-5" data-icon="iconamoon:information-circle-duotone" data-inline="false"></span>
+          <span>Sub level list of files.</span>
+        </div>
+            <div class="
+            p-6 md:p-8 md:px-10 
+            border border-stone-700 my-8 text-sm bg-neutral-900 text-stone-300
+            [&>p]:mb-2
+            ">
+                <h2>Overview</h2>
+                {{ file.summary|safe }}
+            </div>
+            {% if file.children.all %}
+                <div class="
+                py-8 px-6 md:py-4 md:px-10 
+                my-8 text-sm text-stone-300
+                [&>p]:mb-2
+                ">
+                    <h2>Subfiles</h2>
+
+                    {% for child in file.children.all %}
+                    <div>
+                        <h3>
+<a
+  href="{% url 'subfile_details' slug=child.slug %}"
+  hx-get="{% url 'subfile_details' slug=child.slug %}"
+  hx-target="#overlay-content"
+  hx-swap="innerHTML"
+  onclick="document.getElementById('overlay').classList.remove('hidden'); document.getElementById('overlay').style.display = 'block';"
+  class="text-stone-100 hover:no-underline flex gap-0.5 hover:gap-1 items-center py-2 duration-200"
+>
+  <span class="text-stone-100 iconify block w-4 h-4" data-icon="iconamoon:folder-open-duotone"></span>
+  <span>{{ child.name }}</span>
+</a>
+                        </h3>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="px-2 mt-4 text-stone-500 text-sm">No subfiles available.</p>
+            {% endif %}
+        <a
+        href="{% url 'subfile_details' slug=file.slug %}"
+        hx-get="{% url 'subfile_details' slug=file.slug %}"
+        hx-target="#overlay-content"
+        hx-swap="innerHTML"
+        hx-on="htmx:afterOnLoad: document.getElementById('overlay').classList.remove('hidden')"
+        class="text-stone-100 hover:no-underline flex gap-0.5 hover:gap-1 items-center py-4 duration-200 -ml-1"
+        >
+        <span class="text-stone-100 iconify block w-4 h-4" data-icon="iconamoon:arrow-right-2-duotone"></span>
+        <span class="inline-block align-middle">Open folder</span>
+        </a>
+{% endblock %}

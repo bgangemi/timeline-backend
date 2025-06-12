@@ -2,34 +2,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>gangexit</title>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>[x-cloak] { display: none !important; }</style>
-</head>
-<body class="m-0 p-0 font-sans min-h-screen">
-  <div class="flex flex-row min-h-screen">
-    <aside class="w-24 border-r border-slate-300">
-      <nav class="flex flex-col">
-        <div>Home</div>
-        <div>People</div>
-        <div>Organisations</div>
-        <div>Assets</div>
-        <div>Events</div>
-        <div><b>Dossiers</b></div>
-        <div>Tags</div>
-        <div>Evidence</div>
-        <div>Logout</div>
-      </nav>
-    </aside>
-    <main class="flex-1 flex">
-      <div class="flex-1 bg-slate-100">main timeline of the dossier</div>
-      <div class="flex-1 bg-slate-200">empty space for overlay with event specifics</div>
-    </main>
-  </div>
-</body>
+  <title>unscripted</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&family=Fira+Mono:wght@400;500;700&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <style>[x-cloak] { display: none !important; }
+    html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+  </style>
+  <script>
+    function setVh() {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+    setVh();
+    window.addEventListener('resize', setVh);
+  </script>
 
+</head>
+<body class="m-0 p-0 font-sans min-h-screen" x-data="{ open: false }" x-init="console.log('Alpine.js initialized, open =', open)">
+<div class="flex flex-row min-h-screen">
+  {% include "_aside.html" %}
+  
+  <main style="height: calc(var(--vh, 1vh) * 100);" class="flex-1 overflow-auto">
+    <div class="flex h-full bg-stone-950 relative">
+      
+      <!-- Scrollable left pane -->
+      <div class="w-full lg:max-w-[55%] bg-stone-950 overflow-y-auto custom-scrollbar">
+        <!-- Left pane header -->
+        <div class="
+        flex flex-row items-center sticky w-full z-10 justify-between
+        top-0 py-4 px-8 md:py-8 md:px-12 
+        bg-stone-950 border-b border-stone-900
+        ">
+          <div class="text-3xl font-ui font-semibold flex flex-row">
+            <span class="text-amber-200">un</span>
+            <span class="font-semibold text-stone-50 mr-0.5">scripted</span>
+          </div>
+          <div id="hamburger" class="md:hidden w-6 h-4 flex flex-col justify-between mt-[2px]
+            [&>div]:bg-stone-200 [&>div]:h-0.5 [&>div]:rounded cursor-pointer">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <!-- Main content container -->
+        <div class="p-6 md:p-10">
+        {% block content %}MAIN CONTENT{% endblock %}
+        </div>
+
+      </div>
+
+      {% block overlay %}{% endblock %}
+
+    </div>
+  </main>
+</div>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const closeBtn = document.getElementById('closeSidebar');
+  const overlay = document.getElementById('overlay');
+  const menuItems = document.querySelectorAll('.menu-item');
+
+  function openSidebar() {
+    sidebar.classList.remove('translate-x-full');
+    overlay.classList.remove('hidden');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.add('translate-x-full');
+    overlay.classList.add('hidden');
+  }
+
+  hamburger.addEventListener('click', openSidebar);
+  closeBtn.addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  menuItems.forEach(item => {
+    item.addEventListener('click', closeSidebar);
+  });
+  document.body.addEventListener('htmx:afterSwap', function(evt) {
+    if (evt.detail.target.id === 'overlay-content') {
+      const overlay = document.getElementById('overlay');
+      overlay.classList.remove('hidden');
+      overlay.style.display = 'block'; // This overrides Tailwind’s hidden class
+    }
+  });
+</script>
+
+</body>
 </html>

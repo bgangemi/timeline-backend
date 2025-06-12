@@ -6,7 +6,40 @@
   /* Headers */
 
   /* Optional: Remove underline on hover or add a transition */
+  a {
+    @apply text-amber-200;
+  }
   a:hover {
-    
+    @apply underline;
+  }
+  h1, h2, h3, h4 {
+    @apply font-ui font-normal text-stone-200;
+  }
+  h1{
+    @apply text-5xl ml-[-2px] mt-4 mb-6 font-medium;
+  }
+  h2{
+    @apply text-3xl ml-[-1px] mt-0 mb-6;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #292524  transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #292524 ;
+      border-radius: 0px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
   }
 }

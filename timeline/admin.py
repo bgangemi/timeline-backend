@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db import models
-from .models import File, Group, Event, UploadedDocument, Tag   
-from django.utils.html import format_html
+from .models import File, Event, UploadedDocument, Tag   
 from django.utils.safestring import mark_safe
-from django.urls import reverse
 
 class UploadedDocumentInline(GenericTabularInline):
     model = UploadedDocument
@@ -15,31 +13,14 @@ class EventInline(admin.TabularInline):
     fields = ('name', 'date', 'date_approx_level') 
     extra = 0
 
-class GroupInline(admin.TabularInline):
-    model = Group
-    fields = ('view_link', 'name', 'description', 'date_start', 'date_end')
-    readonly_fields = ('view_link', 'date_start', 'date_end')
-    extra = 0
-    ordering = ['date_start']
-
-    def view_link(self, obj):
-        if obj.pk:
-            app_label = obj._meta.app_label
-            model_name = obj._meta.model_name
-            url = reverse(f'admin:{app_label}_{model_name}_change', args=[obj.pk])
-            return format_html('<a href="{}">-> Edit Group</a>', url)
-        return "-"
-    
-    view_link.short_description = 'Edit Group'
-
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
-    list_display = ["indented_name", "parent", "owner", "created_at", "group_count", "event_count"]
-    inlines = [GroupInline, UploadedDocumentInline]
+    list_display = ["indented_name", "parent", "owner", "created_at", "event_count"]
+    inlines = [UploadedDocumentInline]
     autocomplete_fields = ['tags']
 
     def get_queryset(self, request):
@@ -59,23 +40,9 @@ class FileAdmin(admin.ModelAdmin):
     indented_name.short_description = "Name"
     indented_name.admin_order_field = 'name'
 
-    def group_count(self, obj):
-        return obj.group_set.count()
-    group_count.short_description = 'Groups'
-
     def event_count(self, obj):
         return Event.objects.filter(file=obj).count()
     event_count.short_description = 'Events'
-
-@admin.register(Group)
-class GroupAdmin(admin.ModelAdmin):
-    list_display = ['__str__', "date_start", "date_end", "name", "owner", "rendered_description", "file", "created_at"]
-    inlines = [UploadedDocumentInline]
-    autocomplete_fields = ['tags']
-
-    def rendered_description(self, obj):
-        return mark_safe(obj.description) if obj.description else ''
-    rendered_description.short_description = "Description"
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):

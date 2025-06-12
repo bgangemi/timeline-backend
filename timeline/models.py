@@ -21,9 +21,11 @@ class Tag(models.Model):
 
 class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="files")
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    slug = models.SlugField(unique=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="children")
     name = models.CharField(max_length=200, unique=True)
     summary = RichTextField(blank=True, null=True)
+    details = RichTextField(blank=True, null=True)
     information = RichTextField(blank=True, null=True, verbose_name="Practical informations") 
     created_at = models.DateTimeField(auto_now_add=True)
     documents = GenericRelation('UploadedDocument')
@@ -32,37 +34,6 @@ class File(models.Model):
 
     def __str__(self):
         return self.name
-
-class Group(models.Model):
-    owner = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="owned_groups"  # changed from 'groups' to avoid clash
-    )
-    file = models.ForeignKey(File, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=100)
-    description = RichTextField(blank=True, null=True)
-    date_start = models.DateField(blank=True, null=True)
-    date_start_approx_level = models.CharField(
-        max_length=10,
-        choices=APPROXIMATENESS_LEVELS,
-        default='none',
-    )
-    date_end = models.DateField(blank=True, null=True)
-    date_end_approx_level = models.CharField(
-        max_length=10,
-        choices=APPROXIMATENESS_LEVELS,
-        default='none',
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    documents = GenericRelation('UploadedDocument')
-    tags = models.ManyToManyField('Tag', blank=True, related_name='group')
-
-    def __str__(self):
-        file_name = self.file.name if self.file else "No file"
-        return f"{self.name} ({file_name})"
 
 class AbuseType(models.Model):
     name = models.CharField(max_length=50, unique=True)
