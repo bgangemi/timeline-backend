@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db import models
-from .models import File, Event, UploadedDocument, Tag   
+from .models import File, Event, UploadedDocument, Tag, Comment   
 from django.utils.safestring import mark_safe
 
 class UploadedDocumentInline(GenericTabularInline):
@@ -16,6 +16,10 @@ class EventInline(admin.TabularInline):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     search_fields = ['name']
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    search_fields = ['comment']
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
@@ -46,7 +50,7 @@ class FileAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ["date", "name", "owner", "rendered_description"]
+    list_display = ["date", "file", "name", "owner", "rendered_description"]
     list_filter = ["date", "owner", "file"]
     ordering = ["date"]
     inlines = [UploadedDocumentInline]

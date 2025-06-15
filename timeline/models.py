@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -18,6 +19,28 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Comment(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    comment = RichTextField(blank=False, null=False)  # better to require comment
+    date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+
+    def __str__(self):
+    # Check if content_type and object_id are valid
+        if self.content_type_id and self.object_id:
+            try:
+                target = self.content_object  # Try to get related object
+            except Exception:
+                target = None
+        else:
+            target = None
+
+        user_str = str(self.user) if self.user else "Anonymous"
+        return f"Comment by {user_str} on {target if target else 'Unknown content'}"
 
 class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="files")
@@ -30,6 +53,7 @@ class File(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     documents = GenericRelation('UploadedDocument')
     notes = RichTextField(blank=True, null=True) 
+    comments = GenericRelation(Comment)
     tags = models.ManyToManyField('Tag', blank=True, related_name='file')
 
     def __str__(self):
@@ -58,7 +82,11 @@ class Event(models.Model):
     icon = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     documents = GenericRelation('UploadedDocument')
+    comments = GenericRelation(Comment)
     tags = models.ManyToManyField('Tag', blank=True, related_name='event')
+
+    def get_absolute_url(self):
+        return reverse('event_details', kwargs={'event_id': self.id})
 
     def __str__(self):
         return f"{self.date}: {self.name} ({self.file.name})" if self.file else f"{self.date}: {self.name}"
@@ -83,15 +111,3 @@ class UploadedDocument(models.Model):
 
     def __str__(self):
         return f"Document for {self.content_object}"
-
-class Comment(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="comments")
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    comment = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Comment on {self.event} by {self.user}"
-
-    class Meta:
-        ordering = ["date"]

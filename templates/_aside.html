@@ -1,11 +1,20 @@
-<div id="overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity duration-300 opacity-0"></div>
+<div id="sidebar-overlay"
+     x-show="open"
+     x-transition.opacity
+     @click.stop="open = !open"
+     class="fixed inset-0 bg-black/50 z-100 md:no-display"
+     x-cloak>
+</div>
 
-<aside id="sidebar" class="
-  fixed top-0 right-0 h-screen w-24 bg-stone-950 text-stone-50 z-50
-  transform translate-x-full transition-transform duration-300
-  md:static md:translate-x-0 md:block md:left-0 md:right-auto
-  border-l md:border-r border-stone-900
-">
+<aside id="sidebar"
+  x-cloak
+  @click.stop
+  :class="[
+    open ? 'translate-x-0 pointer-events-auto' : 'translate-x-full pointer-events-none',
+    'fixed top-0 right-0 h-screen w-24 shrink-0 bg-stone-950 text-stone-50 z-[9999] transition-transform duration-300',
+    'md:static md:translate-x-0 md:pointer-events-auto md:block md:left-0 md:right-auto',
+    'border-l md: border-stone-800'
+  ]">
 
   <nav class="flex flex-col justify-center h-full
   [&>a.nav-link]:text-tiny
@@ -34,18 +43,18 @@
      class="nav-link flex flex-col gap-[2px] items-center
             text-stone-400
             menu-item
-            {% if request.path == '/files/' %}text-stone-200{% endif %}
+            {% if '/files/' in request.path %}text-stone-200{% endif %}
             hover:no-underline transition-colors duration-100">
 
       <span class="p-2 rounded-full duration-100 
-                    {% if request.path == '/files/' %}
+                    {% if '/files/' in request.path %}
                       bg-amber-200
                     {% else %}
                       bg-stone-900 hover:bg-stone-800
                     {% endif %}">
-      <span class="iconify w-6 h-6 {% if request.path == '/files/' %}text-stone-950{% else %}text-stone-400{% endif %}"  data-icon="solar:folder-with-files-bold-duotone" data-inline="false"></span>
+      <span class="iconify w-6 h-6 {% if '/files/' in request.path %}text-stone-950{% else %}text-stone-400{% endif %}"  data-icon="solar:folder-with-files-bold-duotone" data-inline="false"></span>
     </span>
-    <span class="{% if request.path == '/files/' %}text-yellow-100{% else %}text-stone-400{% endif %}">Files</span>
+    <span class="{% if '/files/' in request.path %}text-yellow-100{% else %}text-stone-400{% endif %}">Files</span>
   </a>
 
   <a href="{% url 'actors' %}"

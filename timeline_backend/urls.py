@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from . import views
+from django.contrib.auth.views import LoginView
+from timeline.forms import TailwindLoginForm
 
 urlpatterns = [
     path('', views.home_view, name='home'),
@@ -19,7 +21,14 @@ urlpatterns = [
     path('files/<slug:slug>/', views.file_details, name='file_details'),
     path('subfile/<slug:slug>/', views.subfile_details, name='subfile_details'),
     path('admin/', admin.site.urls),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(
+        template_name='registration/login.html',
+        authentication_form=TailwindLoginForm
+    ), name='login'),
+    path('event/<int:event_id>/', views.event_details, name='event_details'),
+    path('event/<int:event_id>/comment/add/', views.add_comment, name='add_comment'),
+    path('comments/add/event/<int:event_id>/', views.add_comment, name='add_comment_event'),
+    path('comments/add/file/<int:file_id>/', views.add_comment, name='add_comment_file'),
 ]
 
 if settings.DEBUG:

@@ -1,178 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <h1 class="px-2">List of Files</h1>
-        <div class="font-sans text-stone-600 px-2 flex flex-row items-center gap-4 text-sm">
-          <span class="text-stone-700 iconify block w-5 h-5" data-icon="iconamoon:information-circle-duotone" data-inline="false"></span>
-          <span>High level list of files.</span>
-        </div>
-        {% for parent in parent_files %}
-            <div class="
-            p-6 md:p-8 md:px-10 
-            border-l-2 border-stone-700 my-8 text-sm bg-neutral-900 text-stone-300
-            [&>p]:mb-2
-            ">
-                <h2>
-                  <a
-                    href="{{ parent.slug }}"
-                    class="hover:underline inline-flex items-center gap-2 hover:gap-3 transition-all"
-                  >
-                    <span>{{ parent.name }}</span>
-                    <span
-                      class="iconify w-4 h-4 shrink-0 align-baseline hidden lg:block"
-                      data-icon="akar-icons:link-out"
-                      data-inline="false"
-                    ></span>
-                  </a>
-                </h2>
-                {{ parent.summary|safe }}
-                              
-                <div class="text-xs text-stone-400 flex items-center gap-4 mt-4">
-                  <div class="flex items-center gap-2 ">
-                    <span class="text-stone-500 iconify block w-4 h-4" data-icon="icon-park-twotone:time" data-inline="false"></span>
-                    <span class="inline-block align-middle mt-[2px]">[##TODO-TIMESPAN]</span>
-                  </div>
-                  <div class="flex items-center gap-2 ">
-                    <span class="text-stone-500 iconify block w-4 h-4" data-icon="duo-icons:user" data-inline="false"></span>
-                    <span class="inline-block align-middle mt-[2px]">[##TODO-USER]</span>
-                  </div>
-                </div>
-            </div>
-        {% empty %}
-            <p>Aucun fichier disponible.</p>
-        {% endfor %}
-{% endblock %}
-
-{% block overlay %}
-<div
-  id="overlay"
-  class="overlay-hidden hidden fixed inset-0 bg-black bg-opacity-50 z-50"
-  style="position: fixed;"
->
-  <div
-    id="overlay-content"
-    class="w-full lg:max-w-[50%] flex flex-col border border-slate-500
-          absolute right-0 top-6 lg:top-[25px]
-          h-[calc(100vh-50px)] lg:h-[calc(100vh-50px)]
-          translate-x-0 lg:translate-x-[-25px]
-          z-20 bg-white
-    ">
-    <!-- Initial placeholder content -->
-    <!-- Sélectionnez un dossier pour voir les détails ici.-->
-      <div class="flex-1 p-12 overflow-y-auto custom-scrollbar">
-        <h2 class="text-3xl font-ui mb-4">{{ file.name }}</h2>
-        <p>{{ file.description }}</p>
-        <span class="text-sm font-lexend p-[2px] font-semibold text-red-800">SEQUENCE</span>
-
-        <h2 class="text-3xl font-medium font-ui my-4 font-lexend">File partial details</h2>
-
-        <div class="flex flex-row relative">
-          <div class="w-0.5 bg-red-800 ml-24 mt-2 mb-2"></div>
-          <div class="w-full pl-12">
-            <div class="border border-slate-200 w-full border-slate-200 relative mb-4">
-              <div class="absolute top-1/2 left-0 h-3 w-3 border-2 border-white bg-slate-400 rounded-full -ml-[3.45rem] -translate-y-1/2"></div>
-
-              <div class="absolute top-1/2 left-0 -ml-[9.5rem] -translate-y-1/2 px-2 flex flex-col justify-center items-center">
-                <span class="text-xs block w-18 text-slate-400">Sept</span>
-                <span class="text-3xl block w-18 text-slate-500">01</span>
-                <span class="text-xs block w-18 text-slate-400">2020</span>
-              </div>
-              
-              <div class="absolute top-1/2 left-0 -ml-[10px] -translate-y-1/2">
-                <div
-                  class="w-5 h-5 border border-slate-200 bg-white -ml-[1px]"
-                  style="transform: rotate(225deg); border-bottom-width: 0; border-left-width: 0;"
-                ></div>
-              </div>
-              <div class="px-8 py-6">
-                <h4 class="text-2xl font-ui font-medium pb-4">Title of the event</h4>
-                <p class="text-sm m-[1px]">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh viverra non semper suscipit posuere a pede.</p>
-                <p class="text-sm m-[1px]">Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>
-                <p class="text-sm m-[1px]">Morbi in sem quis dui placerat ornare. Pellentesque odio nisi euismod in pharetra a ultricies in diam. Sed arcu. Cras consequat.</p>
-              </div>
-              <div class="flex flex-col border-t border-slate-100 py-4 px-8">
-                <span class="text-xs font-lexend p-[2px] font-semibold text-slate-400 uppercase">Owner: Bruno G.</span>
-              </div>
-            </div><div class="border border-slate-200 w-full border-slate-200 relative mb-4">
-              <div class="absolute top-1/2 left-0 h-3 w-3 border-2 border-white bg-slate-400 rounded-full -ml-[3.45rem] -translate-y-1/2"></div>
-              <div class="absolute top-1/2 left-0 border-2 border-white bg-slate-300 rounded-full -ml-[11rem] -translate-y-1/2 px-2">
-                <span class="text-xs block w-18 px-[0.25rem] py-[0.25rem] font-semibold text-slate-600">15.08.2022</span>
-              </div>
-              <div class="absolute top-1/2 left-0 -ml-[10px] -translate-y-1/2">
-                <div
-                  class="w-5 h-5 border border-slate-200 bg-white -ml-[1px]"
-                  style="transform: rotate(225deg); border-bottom-width: 0; border-left-width: 0;"
-                ></div>
-              </div>
-              <div class="px-8 py-6">
-                <h4 class="text-2xl font-ui font-medium pb-4">Title of the event</h4>
-                <p class="text-sm m-[1px]">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh viverra non semper suscipit posuere a pede.</p>
-                <p class="text-sm m-[1px]">Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>
-                <p class="text-sm m-[1px]">Morbi in sem quis dui placerat ornare. Pellentesque odio nisi euismod in pharetra a ultricies in diam. Sed arcu. Cras consequat.</p>
-              </div>
-              <div class="flex flex-col border-t border-slate-100 py-4 px-8">
-                <span class="text-xs font-lexend p-[2px] font-semibold text-slate-400 uppercase">Owner: Bruno G.</span>
-              </div>
-            </div><div class="border border-slate-200 w-full border-slate-200 relative mb-4">
-              <div class="absolute top-1/2 left-0 h-3 w-3 border-2 border-white bg-slate-400 rounded-full -ml-[3.45rem] -translate-y-1/2"></div>
-              <div class="absolute top-1/2 left-0 border-2 border-white bg-slate-300 rounded-full -ml-[11rem] -translate-y-1/2 px-2">
-                <span class="text-xs block w-18 px-[0.25rem] py-[0.25rem] font-semibold text-slate-600">15.08.2022</span>
-              </div>
-              <div class="absolute top-1/2 left-0 -ml-[10px] -translate-y-1/2">
-                <div
-                  class="w-5 h-5 border border-slate-200 bg-white -ml-[1px]"
-                  style="transform: rotate(225deg); border-bottom-width: 0; border-left-width: 0;"
-                ></div>
-              </div>
-              <div class="px-8 py-6">
-                <h4 class="text-2xl font-ui font-medium pb-4">Title of the event</h4>
-                <p class="text-sm m-[1px]">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh viverra non semper suscipit posuere a pede.</p>
-                <p class="text-sm m-[1px]">Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>
-                <p class="text-sm m-[1px]">Morbi in sem quis dui placerat ornare. Pellentesque odio nisi euismod in pharetra a ultricies in diam. Sed arcu. Cras consequat.</p>
-              </div>
-              <div class="flex flex-col border-t border-slate-100 py-4 px-8">
-                <span class="text-xs font-lexend p-[2px] font-semibold text-slate-400 uppercase">Owner: Bruno G.</span>
-              </div>
-            </div><div class="border border-slate-200 w-full border-slate-200 relative mb-4">
-              <div class="absolute top-1/2 left-0 h-3 w-3 border-2 border-white bg-slate-400 rounded-full -ml-[3.45rem] -translate-y-1/2"></div>
-              <div class="absolute top-1/2 left-0 border-2 border-white bg-slate-300 rounded-full -ml-[11rem] -translate-y-1/2 px-2">
-                <span class="text-xs block w-18 px-[0.25rem] py-[0.25rem] font-semibold text-slate-600">15.08.2022</span>
-              </div>
-              <div class="absolute top-1/2 left-0 -ml-[10px] -translate-y-1/2">
-                <div
-                  class="w-5 h-5 border border-slate-200 bg-white -ml-[1px]"
-                  style="transform: rotate(225deg); border-bottom-width: 0; border-left-width: 0;"
-                ></div>
-              </div>
-              <div class="px-8 py-6">
-                <h4 class="text-2xl font-ui font-medium pb-4">Title of the event</h4>
-                <p class="text-sm m-[1px]">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh viverra non semper suscipit posuere a pede.</p>
-                <p class="text-sm m-[1px]">Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>
-                <p class="text-sm m-[1px]">Morbi in sem quis dui placerat ornare. Pellentesque odio nisi euismod in pharetra a ultricies in diam. Sed arcu. Cras consequat.</p>
-              </div>
-              <div class="flex flex-col border-t border-slate-100 py-4 px-8">
-                <span class="text-xs font-lexend p-[2px] font-semibold text-slate-400 uppercase">Owner: Bruno G.</span>
-              </div>
-            </div>
-
-    
-          </div>
-        </div>
-
-        
-      </div>
-      <div class="flex w-full px-12 py-4 border-t border-slate-200 relative">
-        <a href="pdf">##TODO:PDF-EXPORT</a>
-        <button
-            id="overlay-close"
-            class="text-xs absolute top-5 right-8 text-gray-500 hover:text-gray-800 text-xl font-bold"
-            aria-label="Close"
-            onclick="document.getElementById('overlay').classList.add('hidden')"
-        >
-            CLOSE
-        </button>
-      </div>  
-    <!-- END FILES PARTIAL -->
+<h1 class="px-2">List of Files</h1>
+<div class="font-sans text-stone-600 px-2 flex flex-row items-center gap-4 text-sm">
+  <span class="text-stone-700 iconify block w-5 h-5" data-icon="iconamoon:information-circle-duotone" data-inline="false"></span>
+  <span>High level list of files.</span>
+</div>
+{% for file in files %}
+<div class="p-8 md:p-8 md:px-10 border-l-2 border-stone-700 my-8 text-sm bg-neutral-900 text-stone-300 [&>p]:mb-2">
+  <h2>
+    <a href="{{ file.slug }}" class="hover:underline inline-flex items-center">
+      <span>{{ file.name }}</span>
+    </a>
+  </h2>
+  {{ file.summary|safe }}
+  <div class="text-xs text-stone-400 flex items-center gap-4 mt-4">
+    <div class="flex items-center gap-2">
+      <span class="text-stone-500 iconify block w-4 h-4" data-icon="icon-park-twotone:time" data-inline="false"></span>
+      <span class="inline-block align-middle mt-[2px]">[##TODO-TIMESPAN]</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-stone-500 iconify block w-4 h-4" data-icon="duo-icons:user" data-inline="false"></span>
+      <span class="inline-block align-middle mt-[2px]">[##TODO-USER]</span>
+    </div>
   </div>
 </div>
+{% empty %}
+<p>Aucun fichier disponible.</p>
+{% endfor %}
 {% endblock %}

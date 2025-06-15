@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* Headers */
-
-  /* Optional: Remove underline on hover or add a transition */
   a {
     @apply text-amber-200;
   }
@@ -21,9 +18,18 @@
   h2{
     @apply text-3xl ml-[-1px] mt-0 mb-6;
   }
+  h3{
+    @apply text-2xl ml-[-1px] mt-0 mb-4;
+  }
+  h4{
+    @apply text-xl ml-[-1px] mt-0 mb-4;
+  }
 }
 
 @layer utilities {
+  .no-display {
+    display: none;
+  }
   .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: #292524  transparent;

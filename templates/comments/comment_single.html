@@ -1,0 +1,5 @@
+<div id="comment-{{ comment.id }}" class="comment">
+  <p><strong>{{ comment.user }}</strong> said:</p>
+  <p>{{ comment.comment|safe }}</p>
+  <small>{{ comment.date }}</small>
+</div>

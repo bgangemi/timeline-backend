@@ -1,57 +1,135 @@
 {% extends "files.html" %}
 
 {% block content %}
-        <h1 class="px-2">{{ file.name }}</h1>
+        <h1 class="px-4">{{ file.name }}</h1>
         <div class="font-sans text-stone-600 px-2 flex flex-row items-center gap-2 text-sm">
           <span class="text-stone-700 iconify block w-5 h-5" data-icon="iconamoon:information-circle-duotone" data-inline="false"></span>
-          <span>Sub level list of files.</span>
         </div>
-            <div class="
-            p-6 md:p-8 md:px-10 
-            border border-stone-700 my-8 text-sm bg-neutral-900 text-stone-300
-            [&>p]:mb-2
-            ">
-                <h2>Overview</h2>
-                {{ file.summary|safe }}
-            </div>
-            {% if file.children.all %}
-                <div class="
-                py-8 px-6 md:py-4 md:px-10 
-                my-8 text-sm text-stone-300
-                [&>p]:mb-2
-                ">
-                    <h2>Subfiles</h2>
+        <div class="
+        p-6 md:py-6 md:px-8 
+        border border-stone-700 my-8 text-sm bg-neutral-700 text-stone-300 rounded-xl
+        [&>p]:mb-2
+        ">
+        <h2>Overview</h2>
+            {{ file.summary|safe }}
+        </div>
 
-                    {% for child in file.children.all %}
-                    <div>
-                        <h3>
-<a
-  href="{% url 'subfile_details' slug=child.slug %}"
-  hx-get="{% url 'subfile_details' slug=child.slug %}"
-  hx-target="#overlay-content"
-  hx-swap="innerHTML"
-  onclick="document.getElementById('overlay').classList.remove('hidden'); document.getElementById('overlay').style.display = 'block';"
-  class="text-stone-100 hover:no-underline flex gap-0.5 hover:gap-1 items-center py-2 duration-200"
->
-  <span class="text-stone-100 iconify block w-4 h-4" data-icon="iconamoon:folder-open-duotone"></span>
-  <span>{{ child.name }}</span>
-</a>
-                        </h3>
+{% endblock %}
+
+{% block other %}
+      <div class="w-full bg-stone-900 overflow-y-auto custom-scrollbar lg:max-w-[45%] border-l border-stone-800 pb-24">
+
+        <!-- Other content / general description -->
+        <div class="px-6 md:px-8">
+            <!-- Other content -->
+            <header class="lg:sticky lg:pt-[4.2rem] top-0 flex flex-row px-2 justify-between items-center z-20 bg-stone-900">
+                <h2 class="font-medium text-stone-200 text-[2.2rem]">Timeline of Events</h2>
+                {% if first_event and last_event %}
+                <span class="text-lg text-stone-500">
+                    {{ first_event.date|date:"Y" }} → {{ last_event.date|date:"Y" }}
+                </span>
+                {% endif %}
+            </header>
+            <div class="relative">
+                <div class="max-w-none px-2">
+                    {% if events %}
+                    <div class="flex flex-row relative md:mt-6">
+                    <!-- timeline -->
+                    <div class="hidden md:block w-[2px] bg-stone-500 ml-5 md:ml-28 mt-2"></div>
+                        <div class="w-full md:pl-12 md:my-4">      
+                                <a
+                                    id="dev-open-overlay"
+                                    href="/event/14/" hx-get="/event/14/"
+                                    hx-target="#overlay-content"
+                                    hx-swap="innerHTML"
+                                    hx-on="htmx:afterSwap: document.getElementById('overlay').classList.remove('hidden')"
+                                    class="hover:no-underline flex gap-0.5 hover:gap-1 items-center duration-200"
+                                >
+                                    <span class="mr-2 opacity-90 text-amber-200">Nouveau bail</span>
+                                    <span class="iconify w-4 h-4 shrink-0 align-baseline block" data-icon="carbon:popup" data-inline="false"></span>
+                                </a>
+                        {% for event in events %}
+                        <div class="border border-stone-800 relative my-8 px-2 py-1 lg:px-4 lg:py-2 bg-neutral-800 -mx-2 w-auto rounded-lg">
+                            <!-- DOT -->
+                            <div class="hidden md:block absolute top-1/2 left-0 h-3 w-3 border-2 border-neutral-800 bg-amber-200 rounded-full -ml-[3rem] -translate-y-1/2"></div>
+                            <div class="hidden md:block absolute top-1/2 left-0 -ml-[10.5rem] -translate-y-1/2 px-2 flex flex-col justify-center items-right">
+                                <span class="text-sm block w-18 text-stone-500">{{ event.date }}</span>
+                            </div>
+                            <!-- Arrow -->
+                            <div class="hidden md:block absolute top-1/2 left-0 -ml-[10px] -translate-y-1/2">
+                            <div class="w-5 h-5 border border-slate-800 bg-neutral-800 -ml-[1px]" style="transform: rotate(225deg); border-bottom-width: 0; border-left-width: 0;"></div>
+                            </div>
+                            <div class="p-3 md:px-4 md:py-4">
+                            <h4 class="text-lg md:text-2xl font-ui font-medium text-stone-400 mt-1 ml-[1px] mb-2">
+                                <a
+                                    href="{{ event.get_absolute_url }}" hx-get="{{ event.get_absolute_url }}"
+                                    hx-target="#overlay-content"
+                                    hx-swap="innerHTML"
+                                    hx-on="htmx:afterSwap: document.getElementById('overlay').classList.remove('hidden')"
+                                    class="hover:no-underline flex gap-0.5 hover:gap-1 items-center duration-200"
+                                >
+                                    <span class="mr-2 opacity-90 text-amber-200">{{ event.name }}</span>
+                                    <span class="iconify w-4 h-4 shrink-0 align-baseline block" data-icon="carbon:popup" data-inline="false"></span>
+                                </a>
+                            </h4>
+
+                            <div class="text-[0.85rem] md:text-sm text-stone-400">{{ event.description|safe }}</div>
+                            <!-- Other paragraphs as in original -->
+                            </div>
+                            <div class="flex flex-row border-t border-stone-700 text-stone-400 mx-3 md:mx-4 py-3 text-xs gap-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-stone-400 iconify block w-4 h-4" data-icon="solar:calendar-date-bold-duotone" data-inline="false"></span>
+                                    <span class="inline-block align-middle mt-[2px]">{{ event.date }}</span>
+                                </div>
+                                <div>
+
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-stone-400 iconify block w-4 h-4" data-icon="solar:notes-bold-duotone" data-inline="false"></span>
+                                    <span class="inline-block align-middle mt-[2px]">[##NOTES]</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-            {% else %}
-                <p class="px-2 mt-4 text-stone-500 text-sm">No subfiles available.</p>
-            {% endif %}
-        <a
-        href="{% url 'subfile_details' slug=file.slug %}"
-        hx-get="{% url 'subfile_details' slug=file.slug %}"
-        hx-target="#overlay-content"
-        hx-swap="innerHTML"
-        hx-on="htmx:afterOnLoad: document.getElementById('overlay').classList.remove('hidden')"
-        class="text-stone-100 hover:no-underline flex gap-0.5 hover:gap-1 items-center py-4 duration-200 -ml-1"
-        >
-        <span class="text-stone-100 iconify block w-4 h-4" data-icon="iconamoon:arrow-right-2-duotone"></span>
-        <span class="inline-block align-middle">Open folder</span>
-        </a>
+                {% else %}
+                    No events have been logged in this file. Yet.
+                {% endif %}
+            </div>
+</div>
+
+
+        </div>
+
+      </div>   
+
+
+{% endblock %}
+
+{% block overlay %}
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[9999] hidden">
+  <section id="overlay-content" class="
+  mx-6 lg:mx-6 md:w-full lg:max-w-[40%] flex flex-col justify-between overflow-y-auto custom-scrollbar
+  absolute right-0 top-6 lg:top-[25px] h-[calc(100vh-50px)] lg:h-[calc(100vh-50px)] translate-x-0 lg:translate-x-[-25px] z-30 
+  border border-stone-500 bg-stone-100
+  ">
+
+  </section>
+</div>
+<script>
+  document.getElementById('overlay-close').addEventListener('click', () => {
+    document.getElementById('overlay').classList.add('hidden');
+  });
+</script>
+<!--script>
+  if (location.hostname === 'localhost') {
+    window.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('dev-open-overlay');
+      if (el) {
+        el.click(); // triggers hx-get to load real content
+      }
+    });
+  }
+</script-->
 {% endblock %}

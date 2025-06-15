@@ -1,0 +1,77 @@
+<!-- only the content for the popup -->
+<div class="relative pb-0 flex flex-col justify-between h-full">
+    <button
+    onclick="closeOverlay()"
+    aria-label="Close overlay"
+    class="absolute top-4 rounded-full p-2 w-8 h-8 border border-amber-300 right-4 text-xs font-bold text-amber-500 hover:bg-amber-100 duration-200 transition z-20"
+  >
+    X
+  </button>
+  <header class="
+  z-10 
+  px-5 lg:px-8 py-6
+  bg-stone-100
+  flex flex-row justify-between items-center
+  ">
+    <div class="flex flex-col">
+        <h1 class="text-[1.8rem] md:text-[2.2rem] text-stone-800 font-medium mt-2 mb-0 pr-24">{{ event.name }}</h1>
+        <h2 class="text-lg text-stone-500 font-medium mt-2 mb-2">{{ event.date }} - {{ event.file.name }}</h2>
+    </div>
+  </header>
+  <div class="max-w-none px-5 lg:px-8 flex-1">
+    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Description</h3>
+    <div class="text-sm mb-6">{{ event.description|safe }}</div>
+    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Additional Context</h3>
+    <div class="text-sm mb-6">{{ event.details|safe }}</div>
+    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Files</h3>
+    <div class="flex flex-row items-top text-sm mb-6">
+      <div class="flex flex-col mr-4">
+        <a href="#">
+          <span class="text-amber-500 iconify block w-8 h-8" data-icon="solar:file-text-bold-duotone" data-inline="false"></span>
+        </a>
+      </div>
+      <div class="flex flex-col">
+        <a href="#" class="text-stone-800 font-bold">File Title</a>
+        <p>File description of the thing it does to serve the interests of whatever I am trying to convey.</p>
+      </div>
+    </div>
+    
+  
+</div>
+
+<div class="w-full px-5 lg:px-8 py-4 bg-stone-200 border-t border-stone-300 pt-6">
+  <!-- Comments Section -->
+<h3 class="text-xl font-medium md:text-2xl text-stone-800">Comments</h3>
+<form
+  hx-post="{% url 'add_comment' event.id %}"
+  hx-target="#comments-list"
+  hx-swap="beforeend"
+  hx-include="this"
+  hx-on="htmx:afterRequest: this.reset()"
+  method="POST"
+  class="flex flex-col items-start justify-start gap-2 mb-4"
+>
+  {% csrf_token %}
+  <textarea name="comment" class="rounded-xl bg-stone-300 border-none text-sm w-full" required></textarea>
+  <button type="submit" class="rounded-full bg-stone-400 font-ui text-xs px-2 py-1 text-stone-200 font-bold uppercase">Add</button>
+</form>
+<div id="comments-list" class="flex flex-col gap-4">
+  {% for comment in comments %}
+    <div class="text-sm flex flex-row gap-4" id="comment-{{ comment.id }}">
+      <div>
+        <div class="p-2 rounded-full bg-stone-400 font-ui text-stone-200">BG</div>          
+      </div>
+      <div class="pt-2">
+        <div><span class="text-stone-800 font-bold mr-2">Bruno G.</span><span class="text-xs">{{ comment.date }}</span></div>
+        <div>{{ comment.comment }}</div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+</div>
+
+<footer class="flex justify-between w-full px-8 py-2 border-t border-stone-300 relative bg-stone-300">
+  <span href="pdf">[##TODO:PDF-EXPORT]</span>
+</footer>
+

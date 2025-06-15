@@ -15,8 +15,8 @@ env.bak/
 venv.bak/
 *.egg-info/
 .eggs/
-dist/
 build/
+node_modules/
 
 # Django stuff:
 *.log
