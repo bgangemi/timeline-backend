@@ -11,6 +11,7 @@ def home_view(request):
     files = File.objects.all()
     return render(request, 'base.html', {'files': files})
 
+@login_required
 def files_view(request, slug=None):
     files = File.objects.all()
     parent_files = File.objects.filter(parent__isnull=True)
@@ -56,6 +57,7 @@ def subfile_details(request, slug):
 
     return render(request, "subfile_details.html", context)
 
+@login_required
 def event_details(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     form = CommentForm()
@@ -67,6 +69,7 @@ def event_details(request, event_id):
         'comments': top_level_comments,
     })
 
+@login_required
 def add_comment(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     if request.method == 'POST':

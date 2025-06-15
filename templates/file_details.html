@@ -37,17 +37,6 @@
                     <!-- timeline -->
                     <div class="hidden md:block w-[2px] bg-stone-500 ml-5 md:ml-28 mt-2"></div>
                         <div class="w-full md:pl-12 md:my-4">      
-                                <a
-                                    id="dev-open-overlay"
-                                    href="/event/14/" hx-get="/event/14/"
-                                    hx-target="#overlay-content"
-                                    hx-swap="innerHTML"
-                                    hx-on="htmx:afterSwap: document.getElementById('overlay').classList.remove('hidden')"
-                                    class="hover:no-underline flex gap-0.5 hover:gap-1 items-center duration-200"
-                                >
-                                    <span class="mr-2 opacity-90 text-amber-200">Nouveau bail</span>
-                                    <span class="iconify w-4 h-4 shrink-0 align-baseline block" data-icon="carbon:popup" data-inline="false"></span>
-                                </a>
                         {% for event in events %}
                         <div class="border border-stone-800 relative my-8 px-2 py-1 lg:px-4 lg:py-2 bg-neutral-800 -mx-2 w-auto rounded-lg">
                             <!-- DOT -->
