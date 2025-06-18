@@ -1,69 +1,48 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>gangexit</title>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>[x-cloak] { display: none !important; }</style>
-</head>
-<body class="font-sans flex flex-col min-h-screen">
+{% extends "base.html" %}
 
-  <header class="w-full">
-    <nav class="border-b border-slate-200 py-4 text-center">
-        <span class="text-3xl font-semibold"><a href="/" class="text-slate-800 hover:text-slate-500">gangexit</a></span>
-    </nav>
-  </header>
+{% block content %}
+<h1 class="text-stone-200">Accueil</h1>
+<div class="font-sans text-stone-500 flex flex-row items-center gap-3 text-sm">
+  <span class="text-stone-600 iconify block w-6 h-6" data-icon="iconamoon:information-circle-fill" data-inline="false"></span>
+  <span class="text-base">Welcome.</span>
+</div>
+        <div class="
+        p-6 md:py-6 md:px-8 
+        border border-neutral-800 my-8 text-normal text-stone-200 rounded-3xl 
+        bg-neutral-700 bg-opacity-70
+        [&>p]:mb-2
+        -mx-4 md:-mx-8
+        ">
+            <h2>Vue d'ensemble</h2>
+            <div>Outil de documentation et de visualisation chronologique conçu pour organiser, 
+                contextualiser et partager des faits complexes survenus dans le cadre d’affaires 
+                familiales, immobilières et entrepreneuriales. L’objectif principal est de permettre 
+                une compréhension claire et structurée des événements, en particulier dans des 
+                contextes où des abus financiers, psychologiques ou juridiques ont pu se produire.</div>
+        </div>
+        <div class="
+        text-sm text-stone-300
+        [&>p]:mb-2 mb-8
+        ">   
+            <h2>Structure</h2>
+            <ul>
+                <li><a href="{% url 'files' %}">Fichiers principaux</a> ("Files") : représentent les principales affaires.</li>
+                <li><a href="{% url 'files' %}">Événements</a> : entrées datées (approximatives ou précises) associées à un ou plusieurs dossiers, enrichies d’informations détaillées.</li>
+                <li><a href="{% url 'files' %}">Événements</a> : entrées datées (approximatives ou précises) associées à un ou plusieurs dossiers, enrichies d’informations détaillées.</li>
+                <li><a href="{% url 'documents' %}">Documents joints</a> : fichiers PDF, scans, etc., liés aux événements ou dossiers.</li>
+                <li><a href="{% url 'files' %}">Timeline visuelle</a> : permet de suivre l’évolution des faits dans le temps et de repérer les enchaînements critiques.</li>
+            </ul>
 
-    <main x-data="groupApp()" class="relative flex-1 mx-auto border-r border-l border-stone-200 max-w-6xl w-full">
-        
-        <template x-show="!selectedGroup" class="w-full bg-slate-200 pt-24 pb-24">
-            <span>hello</span>
-            {% include '_group_list.html' %}
-        </template>
-
-        <template 
-            x-show="selectedGroup"
-            x-transition.opacity.duration.800ms
-            x-cloak
-            class="absolute flex-1 inset-0 flex flex-col gap-4 w-full bg-white pt-24 pb-24"
-        >
-        <span>goodbye</span>
-        {% include '_group_details.html' %}
-    </template>
-    </main>
-
-
-  <footer class="w-full text-center text-sm py-4 border-t border-slate-200 text-slate-600 z-50">
-    <span>Courriels : </span>
-    <a class="font-semibold hover:underline" href="mailto:bgangemi@protonmail.com">Bruno</a><span>&nbsp;&nbsp;-&nbsp;
-    <a class="font-semibold hover:underline" href="mailto:gangemiornella@hotmail.com">Ornella</a></span><br />
-    <span class="text-xs text-slate-600"><small>Strictement confidentiel. Quasiment public.</span>
-  </footer>
-
-      <script>
-    function groupApp() {
-        return {
-            selectedGroup: null,
-
-            selectGroup(groupId) {
-                this.selectedGroup = groupId;
-                // Tu pourras ici faire un fetch plus tard
-                console.log('Groupe sélectionné:', groupId);
-            },
-
-            goBack() {
-                this.selectedGroup = null;
-            }
-        }
-        
-        
-    }
-    </script>
-
-</body>
-
-</html>
+        </div>
+        <div class="
+        text-sm text-stone-300
+        [&>p]:mb-2
+        ">       
+            <h2>Objectifs</h2>
+        <ul>
+        <li>Transmettre efficacement un dossier à un avocat ou à d’autres professionnels (ex. : thérapeutes, autorités).</li>
+        <li>Structurer une mémoire des faits pour des personnes concernées ou victimes.</li>
+        <li>Fournir un outil adaptable à d’autres cas de figure, pour des situations similaires.</li>
+            </ul>
+        </div>
+{% endblock %}

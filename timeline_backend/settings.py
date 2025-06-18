@@ -101,8 +101,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/login/'
+
+LOGIN_URL = '/login/'               
+LOGIN_REDIRECT_URL = '/files/'      
+LOGOUT_REDIRECT_URL = '/login/' 
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -114,18 +116,14 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-LOGIN_URL = '/login/'
-
-LOGIN_REDIRECT_URL = '/files/'       
-LOGOUT_REDIRECT_URL = '/login/'
-
 SECURE_SSL_REDIRECT = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="px-2">Entities</h1>
+<div class="font-sans text-stone-500 px-2 flex flex-row items-center gap-4 text-sm">
+  <span class="text-stone-600 iconify block w-6 h-6" data-icon="iconamoon:information-circle-fill" data-inline="false"></span>
+  <span class="text-base">List of entities, buildings, companies, locations.</span>
+</div>
+{% for entity in entities %}
+    <div class="p-8 md:p-8 md:px-10 border-l-2 border-stone-700 my-8 text-sm bg-neutral-900 text-stone-300 [&>p]:mb-2">
+      <h2>
+        {{ entity.name }}
+      </h2>
+      {{ entity.description|safe }}<br />
+      {{ entity.structure|safe }}<br />
+      <div class="text-xs text-stone-400 flex items-center gap-4 mt-4 hidden">
+        <div class="flex items-center gap-2">
+          <span class="text-stone-500 iconify block w-4 h-4" data-icon="duo-icons:user" data-inline="false"></span>
+          <span class="inline-block align-middle mt-[2px]">
+
+          </span>
+        </div>
+      </div>
+    </div>
+{% empty %}
+  <p>Aucun fichier disponible.</p>
+{% endfor %}
+{% endblock %}

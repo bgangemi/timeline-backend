@@ -4,20 +4,19 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from . import views
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from timeline.forms import TailwindLoginForm
 
 urlpatterns = [
     path('', views.home_view, name='home'),
-    path('dashboard', views.home_view, name='home'),
+    path('dashboard', views.files_view, name='dashboard'),
     path('files/', views.files_view, name='files'),
-    path('actors/', views.files_view, name='actors'),
+    path('actors/', views.actors_view, name='actors'),
     path('stages/', views.files_view, name='stages'),
-    path('assets/', views.files_view, name='assets'),
-    path('acts/', views.files_view, name='acts'),
+    path('entities/', views.entities_view, name='entities'),
     path('scripts/', views.files_view, name='scripts'),
     path('documents/', views.files_view, name='documents'),
-    path('logout/', views.files_view, name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('files/<slug:slug>/', views.file_details, name='file_details'),
     path('subfile/<slug:slug>/', views.subfile_details, name='subfile_details'),
     path('admin/', admin.site.urls),

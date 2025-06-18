@@ -1,19 +1,64 @@
 {% extends "files.html" %}
 
 {% block content %}
-        <h1 class="px-4">{{ file.name }}</h1>
-        <div class="font-sans text-stone-600 px-2 flex flex-row items-center gap-2 text-sm">
-          <span class="text-stone-700 iconify block w-5 h-5" data-icon="iconamoon:information-circle-duotone" data-inline="false"></span>
+        <div class="font-sans text-stone-500 flex flex-row items-center gap-3 text-sm">
+            <a href="../">« Retour</a>
+        </div>
+        <h1>{{ file.name }}</h1>
+        <div class="font-sans text-stone-500 flex flex-row items-center gap-3 text-sm">
+        <span class="text-stone-500 iconify block w-6 h-6 mb-1" data-icon="solar:calendar-date-bold-duotone" data-inline="false"></span>
+        <span class="text-base">{% if file.modified_at %}Last modified {{ file.modified_at }}{% else %}Created {{ file.created_at }}{% endif %}</span>
         </div>
         <div class="
         p-6 md:py-6 md:px-8 
-        border border-stone-700 my-8 text-sm bg-neutral-700 text-stone-300 rounded-xl
+        border border-stone-700 my-8 text-normal text-stone-300 rounded-3xl 
+        bg-stone-800 bg-opacity-50
         [&>p]:mb-2
+        -mx-4 md:-mx-8
         ">
-        <h2>Overview</h2>
+            <h2>Vue d'ensemble</h2>
             {{ file.summary|safe }}
         </div>
-
+        <div class="
+        text-sm text-stone-300
+        [&>p]:mb-2 mb-8
+        ">        
+        <h2>Détails</h2>
+        {{ file.details|safe }}
+        </div>
+        <div class="
+        text-sm text-stone-300
+        [&>p]:mb-2 mb-8
+        ">   
+        <h2>Objectifs</h2>
+        {{ file.objectives|safe }}
+        </div>
+        <div class="
+        text-sm text-stone-300
+        [&>p]:mb-2 mb-8
+        ">   
+        <h2>Notes et impressions</h2>
+        {{ file.notes|safe }}
+        <h2 class="mt-4">Documents</h2>
+            <div class="flex flex-col">
+            {% for document in documents_from_events %}
+            <div class="flex flex-row mb-4">
+                <div class="flex flex-col mr-4">
+                    <a href="{{ document.document.url }}">
+                    <span class="text-amber-200 iconify block w-8 h-8" data-icon="solar:document-bold-duotone" data-inline="false"></span>
+                    </a>
+                </div>
+                <div class="flex flex-col">
+                    <a href="{{ document.url }}" class="text-stone-400 font-semibold text-sm">{{ document.name }}</a>
+                    <p class="text-stone-600 text-xs">{{ document.description }}</p>
+                </div>
+            </div>
+            {% empty %}
+            Pas de documents pour le moment.
+            {% endfor %}
+            
+            </div>
+        </div>
 {% endblock %}
 
 {% block other %}
@@ -41,8 +86,17 @@
                         <div class="border border-stone-800 relative my-8 px-2 py-1 lg:px-4 lg:py-2 bg-neutral-800 -mx-2 w-auto rounded-lg">
                             <!-- DOT -->
                             <div class="hidden md:block absolute top-1/2 left-0 h-3 w-3 border-2 border-neutral-800 bg-amber-200 rounded-full -ml-[3rem] -translate-y-1/2"></div>
-                            <div class="hidden md:block absolute top-1/2 left-0 -ml-[10.5rem] -translate-y-1/2 px-2 flex flex-col justify-center items-right">
-                                <span class="text-sm block w-18 text-stone-500">{{ event.date }}</span>
+
+                            <div class="hidden md:block absolute top-1/2 left-0 -ml-[10.5rem] -translate-y-1/2 px-2 flex flex-col items-center text-center">
+                            <div class="text-stone-500 text-xs leading-tight w-24">
+                                <span class="text-sm font-semibold text-sm">{{ event.date|date:"d.m.Y" }}</span><br />
+                                    {% if event.date_approx_level and event.date_approx_level != "none" %} 
+                                <span class="text-stone-700">(approx. :
+                                    {{ event.date_approx_level }})
+                                </span>
+                                    {% endif %}
+                                
+                            </div>
                             </div>
                             <!-- Arrow -->
                             <div class="hidden md:block absolute top-1/2 left-0 -ml-[10px] -translate-y-1/2">
@@ -61,21 +115,21 @@
                                     <span class="iconify w-4 h-4 shrink-0 align-baseline block" data-icon="carbon:popup" data-inline="false"></span>
                                 </a>
                             </h4>
-
                             <div class="text-[0.85rem] md:text-sm text-stone-400">{{ event.description|safe }}</div>
                             <!-- Other paragraphs as in original -->
                             </div>
                             <div class="flex flex-row border-t border-stone-700 text-stone-400 mx-3 md:mx-4 py-3 text-xs gap-4">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-stone-400 iconify block w-4 h-4" data-icon="solar:calendar-date-bold-duotone" data-inline="false"></span>
-                                    <span class="inline-block align-middle mt-[2px]">{{ event.date }}</span>
-                                </div>
-                                <div>
-
+                                    <span class="text-stone-400 iconify block w-4 h-4" data-icon="uim:comment-message" data-inline="false"></span>
+                                    <span class="inline-block align-middle mt-[2px]">{{ event.comments.count }} comment{{ event.comments.count|pluralize }}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-stone-400 iconify block w-4 h-4" data-icon="solar:notes-bold-duotone" data-inline="false"></span>
-                                    <span class="inline-block align-middle mt-[2px]">[##NOTES]</span>
+                                    {% if event.documents.exists %}
+                                    <span class="text-stone-400 iconify block w-4 h-4" data-icon="solar:document-bold-duotone" data-inline="false"></span>
+                                    <span class="inline-block align-middle mt-[2px]">
+                                      {{ event.documents.count }} document
+                                    </span>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -83,7 +137,7 @@
                     </div>
                 </div>
                 {% else %}
-                    No events have been logged in this file. Yet.
+                    <span class="text-stone-500">No events have been logged in this file. Yet.</span>
                 {% endif %}
             </div>
 </div>

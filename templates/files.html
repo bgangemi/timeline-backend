@@ -1,31 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="px-2">List of Files</h1>
-<div class="font-sans text-stone-600 px-2 flex flex-row items-center gap-4 text-sm">
-  <span class="text-stone-700 iconify block w-5 h-5" data-icon="iconamoon:information-circle-duotone" data-inline="false"></span>
-  <span>High level list of files.</span>
+<h1>Liste des dossiers</h1>
+<div class="font-sans text-stone-500 flex flex-row items-center gap-3 text-sm">
+  <span class="text-stone-600 iconify block w-6 h-6" data-icon="iconamoon:information-circle-fill" data-inline="false"></span>
+  <span class="text-base">Main files list. With the descriptions.</span>
 </div>
-{% for file in files %}
-<div class="p-8 md:p-8 md:px-10 border-l-2 border-stone-700 my-8 text-sm bg-neutral-900 text-stone-300 [&>p]:mb-2">
-  <h2>
-    <a href="{{ file.slug }}" class="hover:underline inline-flex items-center">
-      <span>{{ file.name }}</span>
-    </a>
-  </h2>
-  {{ file.summary|safe }}
-  <div class="text-xs text-stone-400 flex items-center gap-4 mt-4">
-    <div class="flex items-center gap-2">
-      <span class="text-stone-500 iconify block w-4 h-4" data-icon="icon-park-twotone:time" data-inline="false"></span>
-      <span class="inline-block align-middle mt-[2px]">[##TODO-TIMESPAN]</span>
+{% for item in file_data %}
+  {% with file=item.file year_range=item.year_range %}
+      <div class="
+        p-6 md:py-6 md:px-8 
+        my-8 text-normal text-stone-300 rounded-3xl 
+        bg-stone-800 bg-opacity-50
+        [&>p]:mb-2
+        -mx-4 md:-mx-8
+        ">
+      <h2>
+        <a href="{{ file.slug }}" class="hover:underline inline-flex items-center">
+          <span>{{ file.name }}</span>
+        </a>
+      </h2>
+      {{ file.summary|safe }}
+      <div class="text-xs text-stone-400 flex items-center gap-4 mt-4">
+        <div class="flex items-center gap-2">
+          <span class="text-stone-500 iconify block w-4 h-4" data-icon="icon-park-twotone:time" data-inline="false"></span>
+          <span class="inline-block align-middle mt-[2px]">
+            {% if year_range %}
+              {{ year_range.0 }} – {{ year_range.1 }}
+            {% else %}
+              No events
+            {% endif %}
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-stone-500 iconify block w-4 h-4" data-icon="duo-icons:user" data-inline="false"></span>
+          <span class="inline-block align-middle mt-[2px]">
+            {{ file.owner.get_full_name|default:file.owner.username|default:"Unknown" }}
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="text-stone-500 iconify block w-4 h-4" data-icon="duo-icons:user" data-inline="false"></span>
-      <span class="inline-block align-middle mt-[2px]">[##TODO-USER]</span>
-    </div>
-  </div>
-</div>
+  {% endwith %}
 {% empty %}
-<p>Aucun fichier disponible.</p>
+  <p>Aucun fichier disponible.</p>
 {% endfor %}
+
 {% endblock %}

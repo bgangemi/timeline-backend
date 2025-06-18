@@ -15,26 +15,37 @@
   ">
     <div class="flex flex-col">
         <h1 class="text-[1.8rem] md:text-[2.2rem] text-stone-800 font-medium mt-2 mb-0 pr-24">{{ event.name }}</h1>
-        <h2 class="text-lg text-stone-500 font-medium mt-2 mb-2">{{ event.date }} - {{ event.file.name }}</h2>
+        <h2 class="text-lg text-stone-500 font-medium mt-2 mb-2">
+          {{ event.date }}
+          {% if event.date_approx_level and event.date_approx_level != "none" %}
+            (date approximation : {{ event.date_approx_level }})
+          {% endif %}
+        </h2>
     </div>
   </header>
   <div class="max-w-none px-5 lg:px-8 flex-1">
     <h3 class="text-xl font-medium md:text-2xl text-stone-800">Description</h3>
     <div class="text-sm mb-6">{{ event.description|safe }}</div>
-    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Additional Context</h3>
+    {% if event.details %}
+    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Contexte additionnel</h3>
     <div class="text-sm mb-6">{{ event.details|safe }}</div>
-    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Files</h3>
+    {% endif %}
+    {% if event.documents.exists %}
+    <h3 class="text-xl font-medium md:text-2xl text-stone-800">Documents</h3>
     <div class="flex flex-row items-top text-sm mb-6">
+      {% for document in event.documents.all %}
       <div class="flex flex-col mr-4">
-        <a href="#">
-          <span class="text-amber-500 iconify block w-8 h-8" data-icon="solar:file-text-bold-duotone" data-inline="false"></span>
+        <a href="{{ document.document.url }}">
+          <span class="text-amber-500 iconify block w-8 h-8" data-icon="solar:document-bold-duotone" data-inline="false"></span>
         </a>
       </div>
       <div class="flex flex-col">
-        <a href="#" class="text-stone-800 font-bold">File Title</a>
-        <p>File description of the thing it does to serve the interests of whatever I am trying to convey.</p>
+        <a href="{{ document.url }}" class="text-stone-800 font-bold">{{ document.name }}</a>
+        <p>{{ document.description }}</p>
       </div>
+      {% endfor %}
     </div>
+    {% endif %}
     
   
 </div>
@@ -52,8 +63,8 @@
   class="flex flex-col items-start justify-start gap-2 mb-4"
 >
   {% csrf_token %}
-  <textarea name="comment" class="rounded-xl bg-stone-300 border-none text-sm w-full" required></textarea>
-  <button type="submit" class="rounded-full bg-stone-400 font-ui text-xs px-2 py-1 text-stone-200 font-bold uppercase">Add</button>
+  <textarea name="comment" class="rounded-md bg-stone-300 border-none text-sm w-full" required></textarea>
+  <button type="submit" class="rounded-md bg-stone-400 font-ui text-xs px-2 py-1 text-stone-200 font-bold uppercase">Add</button>
 </form>
 <div id="comments-list" class="flex flex-col gap-4">
   {% for comment in comments %}

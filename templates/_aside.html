@@ -24,21 +24,6 @@
   [&>a.nav-link:first-child]:mt-8
   [&>a.nav-link]:mb-4">
 
-  <a href="{% url 'home' %}"
-     class="nav-link flex flex-col gap-[2px] items-center
-            text-stone-400
-            menu-item
-            {% if request.path == '/' %}text-stone-200{% endif %}
-            hover:no-underline transition-colors duration-100">
-
-    <span class="p-2 rounded-full duration-100 bg-stone-900
-                 {% if request.path == '/' %}bg-stone-100{% endif %}
-                 {% if request.path != '/' %}hover:bg-stone-800{% endif %}">
-      <span class="iconify w-6 h-6 {% if request.path == '/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:home-angle-bold-duotone" data-inline="false"></span>
-    </span>
-    <span class="{% if request.path == '/' %}text-stone-50{% else %}text-stone-400{% endif %}">Home</span>
-  </a>
-
   <a href="{% url 'files' %}"
      class="nav-link flex flex-col gap-[2px] items-center
             text-stone-400
@@ -57,22 +42,25 @@
     <span class="{% if '/files/' in request.path %}text-yellow-100{% else %}text-stone-400{% endif %}">Files</span>
   </a>
 
-  <a href="{% url 'actors' %}"
+  <a href="{% url 'entities' %}"
      class="nav-link flex flex-col gap-[2px] items-center
             text-stone-400
             menu-item
-            {% if request.path == '/actors/' %}text-stone-200{% endif %}
+            {% if request.path == '/entities/' %}text-stone-200{% endif %}
             hover:no-underline transition-colors duration-100">
 
-    <span class="p-2 rounded-full duration-100 bg-stone-900
-                 {% if request.path == '/actors/' %}bg-stone-100{% endif %}
-                 {% if request.path != '/actors/' %}hover:bg-stone-800{% endif %}">
-      <span class="iconify w-6 h-6 {% if request.path == '/actors/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:masks-bold-duotone" data-inline="false"></span>
+      <span class="p-2 rounded-full duration-100 
+                    {% if '/entities/' in request.path %}
+                      bg-amber-200
+                    {% else %}
+                      bg-stone-900 hover:bg-stone-800
+                    {% endif %}">
+      <span class="iconify w-6 h-6 {% if request.path == '/entities/' %}text-stone-950{% else %}text-stone-400{% endif %}" data-icon="solar:structure-bold-duotone" data-inline="false"></span>
     </span>
-    <span class="{% if request.path == '/actors/' %}text-stone-50{% else %}text-stone-400{% endif %}">Actors</span>
+    <span class="{% if request.path == '/entities/' %}text-stone-50{% else %}text-stone-400{% endif %}">Entities</span>
   </a>
 
-  <a href="{% url 'acts' %}"
+  <!-- a href="{% url 'actors' %}"
      class="nav-link flex flex-col gap-[2px] items-center
             text-stone-400
             menu-item
@@ -115,19 +103,22 @@
       <span class="iconify w-6 h-6" data-icon="solar:documents-bold-duotone" data-inline="false"></span>
     </span>
     <span class="{% if request.path == '/documents/' %}text-stone-50{% else %}text-stone-400{% endif %}">Docs</span>
-  </a>
+  </a-->
 
-  <a href="{% url 'logout' %}"
-     class="nav-link flex flex-col gap-[4px] items-center mt-auto
-            text-stone-400
-            menu-item
-            hover:no-underline transition-colors duration-100">
-
+<form method="post" action="{% url 'logout' %}" class="mt-auto pb-6">
+  {% csrf_token %}
+  <button type="submit"
+    class="nav-link flex flex-col gap-[4px] items-center
+           text-stone-400
+           menu-item
+           hover:no-underline transition-colors duration-100 w-full text-xs"
+  >
     <span class="p-2 rounded-full duration-100 bg-stone-900 hover:bg-stone-800">
       <span class="iconify w-5 h-5" data-icon="solar:exit-bold-duotone" data-inline="false"></span>
     </span>
     <span>Exit</span>
-  </a>    
+  </button>
+</form>
 
 </nav>
 

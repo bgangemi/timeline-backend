@@ -14,6 +14,11 @@ APPROXIMATENESS_LEVELS = [
     ('unknown', 'Unknown/very vague'),
 ]
 
+ENTITIES = [
+    ('company', 'Company'),
+    ('property', 'Approximate day'),
+]
+
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -50,14 +55,24 @@ class File(models.Model):
     summary = RichTextField(blank=True, null=True)
     details = RichTextField(blank=True, null=True)
     information = RichTextField(blank=True, null=True, verbose_name="Practical informations") 
+    objectives = RichTextField(blank=True, null=True, verbose_name="Objectives") 
     created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True) 
     documents = GenericRelation('UploadedDocument')
     notes = RichTextField(blank=True, null=True) 
     comments = GenericRelation(Comment)
     tags = models.ManyToManyField('Tag', blank=True, related_name='file')
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+    
+    def get_documents_from_events(self):
+        event_ct = ContentType.objects.get_for_model(Event)
+        return UploadedDocument.objects.filter(
+            content_type=event_ct,
+            object_id__in=self.events.values_list('id', flat=True)
+        )
 
 class AbuseType(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -99,7 +114,8 @@ class UploadedDocument(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
     document = models.FileField(upload_to="documents/")
-    description = RichTextField(blank=True, null=True) 
+    name = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=200)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     date = models.DateField(blank=True, null=True)
     date_approx_level = models.CharField(
@@ -111,3 +127,23 @@ class UploadedDocument(models.Model):
 
     def __str__(self):
         return f"Document for {self.content_object}"
+    
+class Entity(models.Model):
+    name = models.CharField(max_length=50, blank=True)
+    type = models.CharField(
+        max_length=10,
+        choices=ENTITIES,
+        default='none',
+    )
+    description = RichTextField(blank=True, null=True) 
+    structure = RichTextField(blank=True, null=True) 
+    documents = GenericRelation('UploadedDocument')
+    comments = GenericRelation(Comment)
+    tags = models.ManyToManyField('Tag', blank=True, related_name='legal_entities')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = "Entities"
